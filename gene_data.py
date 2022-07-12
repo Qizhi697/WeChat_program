@@ -16,10 +16,8 @@ def forward(sleep_c, study_c, ramdom_ratio, index):
     if np.random.rand() < ramdom_ratio:
         study_radom = np.random.choice(num_student, int(ramdom_ratio * num_student / 10), replace=False)
         keep_study_ratio[study_radom] = 0.5
-    student_fea[student_fea[:, 0, index - 1] == 0, 0, index] = (rand > keep_sleep_ratio).astype(int)[
-        student_fea[:, 0, index - 1] == 0]
-    student_fea[student_fea[:, 0, index - 1] == 1, 0, index] = (rand < keep_study_ratio).astype(int)[
-        student_fea[:, 0, index - 1] == 1]
+    student_fea[student_fea[:, 0, index - 1] == 0, 0, index] = (rand > keep_sleep_ratio).astype(int)[student_fea[:, 0, index - 1] == 0]
+    student_fea[student_fea[:, 0, index - 1] == 1, 0, index] = (rand < keep_study_ratio).astype(int)[student_fea[:, 0, index - 1] == 1]
     student_fea[:, 1, index] = 0
     index_keep = student_fea[:, 0, index] == student_fea[:, 0, index - 1]
     student_fea[index_keep, 1, index] = student_fea[index_keep, 1, index - 1] + 1
@@ -31,7 +29,6 @@ if __name__ == '__main__':
     num_student = 1000
     interval = 1
     interval_time = 1 / interval
-    max_c = 600
     length = interval * 1440 * day + 1
     day0 = 1440 * interval
     student_fea = np.zeros((num_student, 3, length + interval * 1440))
@@ -69,9 +66,8 @@ if __name__ == '__main__':
         else:
             student_fea[student_fea[:, 0, index] == 0, 2, index] = student_fea[
                 student_fea[:, 0, index] == 0, 2, index - 1]
-            student_fea[student_fea[:, 0, index] == 1, 2, index] = student_fea[student_fea[:, 0,
-                                                                               index] == 1, 2, index - 1] + interval_time
+            student_fea[student_fea[:, 0, index] == 1, 2, index] = student_fea[student_fea[:, 0, index] == 1, 2, index - 1] + interval_time
 
     # save simulation data
-    student_fea[:, :2, :].astype('int16').tofile('student_fea.bin')
-    student_fea[:, -1, :].astype('float32').tofile('time_statis.bin')
+    # student_fea[:, :2, :].astype('int16').tofile(r'resource\student_fea.bin')
+    student_fea[:, -1, interval * 1440:].astype('float32').tofile(r'resource\time_statis.bin')
