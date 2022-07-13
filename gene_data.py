@@ -26,7 +26,7 @@ def forward(sleep_c, study_c, ramdom_ratio, index):
 if __name__ == '__main__':
     # initialize params
     day = 2
-    num_student = 1000
+    num_student = 720
     interval = 1
     interval_time = 1 / interval
     length = interval * 1440 * day + 1
